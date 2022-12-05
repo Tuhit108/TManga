@@ -24,7 +24,8 @@ import { formatDate } from "@/utils/date";
 import { IC_ADD_TASK } from "@/assets";
 import { defaultParams } from "@/utils";
 import Carousel from 'react-native-snap-carousel';
-import HOT_BOOKS from "@/store/books/functions";
+import  { LIST_BOOKS,HOT_BOOKS, } from "@/store/books/functions";
+import { useBook, useBookIds } from "@/store/books";
 
 interface ItemProps {
   id: string;
@@ -35,20 +36,20 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 
 const TaskItemCB = memo((props: ItemProps) => {
   const { id } = props;
-  const task = useTask(id);
+  const book = useBook(id)
+  console.log("book",book);
 
-  const onPressTask = useCallback(() => {
-    navigateToDetailScreen({ id: id });
-  }, []);
+  const onPress =useCallback (() => {
+    navigateToDetailScreen({id : id})
+  },[id]);
   return (
-    <TouchableOpacity onPress={onPressTask} key={id}>
-      <TaskItem taskName={task?.name || ""}
-                date={formatDate(task?.deadline) || "Không có deadline"}
-                avatar={task?.avatar || ""}
-                status={(task?.complete == "100.00")}
-                userId={task?.user_id || ""}
+
+    <TaskItemView  key={id} onPress={onPress}>
+      <TaskItem name={book?.title || ""}
+                img={book?.bookImg || ""}
+                status={book?.view}
       />
-    </TouchableOpacity>
+    </TaskItemView>
   );
 });
 
@@ -64,63 +65,45 @@ const HomeScreen = () => {
   const [isLastPage, setIsLastPage] = useState(false);
   const [page, setPage] = useState(1);
   const taskIds = useTaskIds();
+  const bookIds = useBookIds()
+  const [hot,setHot] = useState([])
 const [data,setData] = useState([])
   const isCarousel = React.useRef(null)
 
   const getData = useCallback(async () => {
     const res = await HOT_BOOKS();
     console.log("reload");
-    setData(res)
+    setHot(res)
   }, [])
 
-  const _getList = useCallback(async (refreshing?: boolean, loadingMorePage?: boolean) => {
 
-    const taskParams = {
-      access_token: user.access_token,
-      client_key: user.client_key,
-      page: loadingMorePage ? page : 1,
-      ...defaultParams
-    };
+  const [{loading: refreshing}, getList] = useAsyncFn( async ()=>{
+      const res = await LIST_BOOKS(page);
+      setData(res)
+      console.log("hihi");
+      if (!res.length || res.length < 30) {
+        setIsLastPage(true);
+      } else {
+        setIsLastPage(false);
+      }
+  }
 
-    const res = await requestGetTaskList(taskParams);
-
-    if (!res.length || res.length < 50) {
-      setIsLastPage(true);
-    } else {
-      setIsLastPage(false);
-    }
-    setLoadingMore(false);
-
-  }, [page,user])
-
-  const [{loading: refreshing}, refresh] = useAsyncFn(async () => _getList(true), [_getList])
-  const [{loading: loadingMorePage}, loadMore] = useAsyncFn(async () => _getList(false, true), [_getList])
+  , [page])
 
   const onRefresh = useCallback(() => {
     setPage(1)
-    refresh().then()
+    getList().then()
   }, []);
 
-  const getListMember = useCallback(async () => {
-    await requestGetListMember({
-      access_token: user.access_token,
-      client_key: user.client_key,
-      ...defaultParams
-    });
-  }, [user]);
 
-  const handleLoadMore = useCallback(() => {
-    if (loadingMore || loadingMorePage || isLastPage ) {
-      return;
-    }
-    console.log(new Date());
-    setLoadingMore(true);
+  const onPressNext = useCallback(() => {
+    console.log("hihi");
     setPage(page + 1);
 
-  }, [loadingMorePage, loadingMore, page, isLastPage]);
+  }, [ page]);
 
   useEffect(() => {
-    loadMore().then();
+    getList().then();
   }, [page]);
 
   useEffect(() => {
@@ -130,20 +113,17 @@ const [data,setData] = useState([])
   const renderFooter = useCallback(() => {
     return (
       <FooterView>
-        {loadingMore ? (
-          <View
-            style={{
-              width: "100%",
-              height: 150,
-              alignItems: "center",
-              justifyContent: "center"
-            }}>
-            <ActivityIndicator size={"large"} color="pink" />
-          </View>
-        ) : null}
-        {(isLastPage && page > 1) ? (
-          <LastPageText>hết</LastPageText>
-        ) : null}
+        <PageView>
+          <PreButton>
+            <PreText>Trước</PreText>
+          </PreButton>
+          <PageText>{page}</PageText>
+          <NextButton onPress={onPressNext}>
+            <PreText>Sau</PreText>
+          </NextButton>
+        </PageView>
+
+
       </FooterView>);
   }, [loadingMore, isLastPage]);
 
@@ -161,30 +141,35 @@ const [data,setData] = useState([])
   return (
     <WrapperView>
       <TabHeader title={"Trang chủ"} />
-      <Carousel
-        layout="default"
-        ref={isCarousel}
-        data={data}
-        autoplay={true}
-        renderItem={CarouselCardItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-      />
-      <View style={{flex: 1, height: '100%'}}>
 
+      <View style={ {flex : 1}}>
+        <CarouselSectionView>
+          <Carousel
+            layout="default"
+            ref={isCarousel}
+            data={hot}
+            autoplay={true}
+            renderItem={CarouselCardItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+          />
+        </CarouselSectionView>
+
+        < SectionText>Truyện mới cập nhật</SectionText>
         <FlatList
           removeClippedSubviews={true}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          data={taskIds}
+          // refreshControl={
+          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          // }
+          data={bookIds}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
-          onEndReached={handleLoadMore}
           ListFooterComponent={renderFooter}
           onEndReachedThreshold={1}
 
         />
+
+
       </View>
 
 
@@ -199,11 +184,19 @@ const WrapperView = styled.View`
   flex: auto;
   background-color: white;
 `;
+const SectionText = styled.Text`
+  padding: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  `
+const CarouselSectionView = styled.View`
+  width: ${ITEM_WIDTH}px;
+  height: 250px;
+`;
 const CarouselView = styled.View`
   padding-top: 10px;
   background-color: white;
   width: ${ITEM_WIDTH}px;
-  
 `;
 const CarouselImage = styled.Image`
   width: ${ITEM_WIDTH}px;
@@ -216,9 +209,37 @@ const CarouselText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  
-  
 `
+const PageView = styled.View`
+  flex-direction: row ;
+  justify-content: center;
+`
+const PageText = styled.Text`
+  line-height: 40px;
+  padding-left: 12px;
+  padding-right: 12px;
+`
+const PreButton = styled.TouchableOpacity`
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  elevation: 15;
+`;
+const NextButton = styled.TouchableOpacity`
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 40px;
+ border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  elevation: 15;
+`;
+const PreText = styled.Text``
 const AddTaskButton = styled.TouchableOpacity`
   position: absolute;
   background-color: #ffffff;
@@ -236,7 +257,8 @@ const AddTask = styled.Image`
   width: 20px;
   height: 20px;
 `;
-
+const TaskItemView = styled.TouchableOpacity`
+`
 const LastPageText = styled.Text`
   margin-top: 20px;
 `;

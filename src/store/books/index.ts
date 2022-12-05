@@ -5,14 +5,15 @@ import { RootState } from "@/store";
 interface RawBook{
   id: string;
   bookImg: string;
-  title: string
+  title: string;
+  view : string
 }
 
 const { setStore, reducer, sync, useByKey, setQueries, removeByKey, useKeysByQuery } =
-  createDynamicReducer<RawProject>("book", "id");
+  createDynamicReducer<RawBook>("books", "id");
 
 export const setBookStore = setStore;
-export const projectReducer = reducer;
+export const bookReducer = reducer;
 export const useBook = useByKey;
 export const syncBook = sync;
 export const setBookQueries = setQueries;

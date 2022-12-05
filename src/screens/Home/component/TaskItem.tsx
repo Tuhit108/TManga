@@ -4,42 +4,25 @@ import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { IC_RED_CLOCK, IMG_ADD_DEFAULT } from "@/assets";
 import { CheckBox } from "@/component/CheckBox";
+import { SlideFromRightIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
 
 interface Props {
-  taskName: string;
-  date: string;
-  avatar: string;
-  status: boolean;
-  userId: string;
+  name: string;
+  img: string;
+  status: string
 }
 
 export const TaskItem =memo((props: Props) => {
-  const { taskName, date, avatar, status, userId } = props;
-  const [isFinished, setFinished] = useState(status);
+  const { name, img,status } = props;
   return (
     <ListView>
-      <LeftItemView>
-        <CheckBox isChecked={isFinished} setChecked={setFinished} />
-        <ItemView>
-          <ItemNameText numberOfLines={1} finished={isFinished}>
-            {taskName}
-          </ItemNameText>
-          <ItemInformationView>
-            <ClockIcon source={IC_RED_CLOCK} finished={isFinished} />
-            <ItemDateText finished={isFinished}>{date}</ItemDateText>
-            {/*{isEmergency ?*/}
-            {/*  <WarningView>*/}
-            {/*    <WarningText>Khẩn cấp</WarningText>*/}
-            {/*  </WarningView>*/}
-            {/*  : null}*/}
-          </ItemInformationView>
-        </ItemView>
-      </LeftItemView>
-      <TouchableOpacity>
-        <ItemImage
-          source={userId.length > 1 ? { uri: avatar } : IMG_ADD_DEFAULT}
-        />
-      </TouchableOpacity>
+        <LeftItemView>
+          <BookImg source={{uri:img }}/>
+        </LeftItemView>
+        <RightItemView>
+          <ItemName numberOfLines={2}>{name}</ItemName>
+          <ItemStatus>{status}</ItemStatus>
+        </RightItemView>
     </ListView>
   );
 });
@@ -48,51 +31,40 @@ export const TaskItem =memo((props: Props) => {
 const ListView = styled.View`
   flex-direction: row;
   width: 100%;
-  height: 64px;
-  justify-content: space-between;
-  align-items: center;
+  height: 148px;
   border-bottom-color: #F5F5F5;
   border-bottom-width: 1px;
+  padding: 12px;
 `;
+const BookImg = styled.Image`
+  height: 124px;
+  width: 90px;
+  border-radius: 8px;
+`
 const LeftItemView = styled.View`
-  flex-direction: row;
-  align-items: center;
+  height: 100px;
 `;
-const ItemView = styled.View`
-  width: 70%;
+const RightItemView = styled.View`
+  flex-direction: column;
+  justify-content: space-between;
 `;
-const ItemImage = styled.Image`
-  margin-right: 16px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50px;
-`;
-const ItemNameText = styled.Text<{ finished: boolean }>`
-  text-decoration: ${(props: any) => (props.finished ? "line-through" : null)};
-  text-decoration-color: #11D262;
+
+const ItemName = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 18px;
+  letter-spacing: 0.12px;
+  padding-left: 12px;
+  width:300px;
+  color: red
+`
+const ItemStatus = styled.Text`
   font-weight: 400;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 16px;
   letter-spacing: 0.12px;
-  color: ${(props: any) => (props.finished ? "#11D262" : "#333333")};
-`;
-const ItemInformationView = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-top: 7px;
-`;
-const ClockIcon = styled.Image<{ finished: boolean }>`
-  width: 12px;
-  height: 12px;
-  margin-right: 6px;
-  tint-color: ${(props: any) => (props.finished ? "#BBBBBB" : "#EB5757")}
-`;
-const ItemDateText = styled.Text<{ finished: boolean }>`
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0.12px;
-  color: ${(props: any) => (props.finished ? "#BDBDBD" : "#EB5757")};
-`;
+  padding-left : 12px;
+`
+
 
 

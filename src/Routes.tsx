@@ -16,6 +16,7 @@ import DrawerScreen from "@/screens/Drawer/DrawerScreen";
 import TaskDetailScreen from "@/screens/TaskDetail/TaskDetailScreen";
 import { PreloadScreen } from "@/screens/PreloadScreen";
 import CreateTaskScreen from "@/screens/CreateTask/CreateTask";
+import { BookDetailScreen } from "@/screens/BookDetal/BookDetailScreen";
 
 
 
@@ -134,7 +135,7 @@ const MainStackComponent = memo(function MainStackComponent() {
       initialRouteName="Drawer"
     >
       <MainStack.Screen name="Drawer" component={DrawerStackComponent} />
-      <MainStack.Screen name="TaskDetailScreen" component={TaskDetailScreen} />
+      <MainStack.Screen name="BookDetailScreen" component={BookDetailScreen} />
       <MainStack.Screen name="CreateTaskScreen" component={CreateTaskScreen} />
     </MainStack.Navigator>
   );

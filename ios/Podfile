@@ -21,6 +21,8 @@ target 'TManga' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'react-native-pager-view', :path => '../node_modules/react-native-pager-view'
+
   target 'TMangaTests' do
     inherit! :complete
     # Pods for testing

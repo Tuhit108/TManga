@@ -30,7 +30,7 @@ export const openDrawer = () =>
   navigation().dispatch(DrawerActions.openDrawer());
 
 export const navigateToDetailScreen = createNavigate<DetailScreenProps>(
-  'TaskDetailScreen',
+  'BookDetailScreen',
 );
 export const navigateToCreateTaskScreen = createNavigate<DetailScreenProps>(
   'CreateTaskScreen',
