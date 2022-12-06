@@ -39,6 +39,8 @@ export const IC_ANGRY= require("./icons/angry.png")
 export const IC_WOW= require("./icons/wow.png")
 export const IC_SAD= require("./icons/sad.png")
 export const IC_ADD_TASK = require("./icons/Add.png")
+export const IC_GENRES = require("./icons/ic_genres.png")
+export const IC_SEARCH = require("./icons/ic_search.png")
 
 
 export const IMG_LOGO = require("./imgs/logo.png");

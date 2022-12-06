@@ -3,6 +3,14 @@
 export interface DetailScreenProps {
   id: string;
 }
+export interface GenresProps {
+  id: string;
+  name : string;
+}
+export interface ChapterProps {
+  id: string;
+  name : string
+}
 
 export interface RawUser{
   id: string;

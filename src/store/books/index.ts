@@ -6,7 +6,7 @@ interface RawBook{
   id: string;
   bookImg: string;
   title: string;
-  view : string
+  latest : string
 }
 
 const { setStore, reducer, sync, useByKey, setQueries, removeByKey, useKeysByQuery } =

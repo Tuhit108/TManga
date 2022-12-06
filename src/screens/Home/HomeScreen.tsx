@@ -13,7 +13,7 @@ import {
   View
 } from "react-native";
 import { TabHeader } from "@/component/TabHeader";
-import { TaskItem } from "@/screens/Home/component/TaskItem";
+import { BookItem } from "@/screens/Home/component/BookItem";
 import { navigateToCreateTaskScreen, navigateToDetailScreen } from "@/utils/navigation";
 import { useTask, useTaskIds } from "@/store/tasks";
 import useAsyncFn from "@/hooks/useAsyncFn";
@@ -26,6 +26,7 @@ import { defaultParams } from "@/utils";
 import Carousel from 'react-native-snap-carousel';
 import  { LIST_BOOKS,HOT_BOOKS, } from "@/store/books/functions";
 import { useBook, useBookIds } from "@/store/books";
+import { LATEST_UPDATE } from "@/store/books/apimanhuarock/latest_update_list";
 
 interface ItemProps {
   id: string;
@@ -37,17 +38,14 @@ const ITEM_HEIGHT = Math.round(ITEM_WIDTH * 3 / 4);
 const TaskItemCB = memo((props: ItemProps) => {
   const { id } = props;
   const book = useBook(id)
-  console.log("book",book);
 
-  const onPress =useCallback (() => {
-    navigateToDetailScreen({id : id})
-  },[id]);
   return (
 
-    <TaskItemView  key={id} onPress={onPress}>
-      <TaskItem name={book?.title || ""}
+    <TaskItemView  key={id} >
+      <BookItem name={book?.title || ""}
                 img={book?.bookImg || ""}
-                status={book?.view}
+                status={book?.latest}
+                url={book?.id}
       />
     </TaskItemView>
   );
@@ -72,15 +70,14 @@ const [data,setData] = useState([])
 
   const getData = useCallback(async () => {
     const res = await HOT_BOOKS();
-    console.log("reload");
     setHot(res)
   }, [])
 
 
   const [{loading: refreshing}, getList] = useAsyncFn( async ()=>{
-      const res = await LIST_BOOKS(page);
+      const res = await LATEST_UPDATE(page);
       setData(res)
-      console.log("hihi");
+      console.log("hihi",res);
       if (!res.length || res.length < 30) {
         setIsLastPage(true);
       } else {
@@ -97,12 +94,12 @@ const [data,setData] = useState([])
 
 
   const onPressNext = useCallback(() => {
-    console.log("hihi");
     setPage(page + 1);
 
   }, [ page]);
 
   useEffect(() => {
+
     getList().then();
   }, [page]);
 
@@ -173,7 +170,7 @@ const [data,setData] = useState([])
       </View>
 
 
-      <AddTaskButton onPress={navigateToCreateTaskScreen}>
+      <AddTaskButton onPress={LATEST_UPDATE}>
         <AddTask source={IC_ADD_TASK} />
       </AddTaskButton>
     </WrapperView>

@@ -57,7 +57,6 @@ export const LIST_BOOKS = (id) =>
           )
         });
       syncAllBooks(data)
-      console.log("data",data);
       return data;
 
     }).catch(e => console.log('Error: '+e));

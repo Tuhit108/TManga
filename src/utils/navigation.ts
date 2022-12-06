@@ -6,7 +6,7 @@ import {
 
 import {TransitionPresets} from '@react-navigation/stack';
 
-import {DetailScreenProps} from "@/types";
+import { ChapterProps, DetailScreenProps, GenresProps } from "@/types";
 
 export const defaultScreenOptions = TransitionPresets.SlideFromRightIOS;
 
@@ -31,6 +31,12 @@ export const openDrawer = () =>
 
 export const navigateToDetailScreen = createNavigate<DetailScreenProps>(
   'BookDetailScreen',
+);
+export const navigateToGenresDetailScreen = createNavigate<GenresProps>(
+  'GenresDetailScreen',
+);
+export const navigateToReadChapterScreen = createNavigate<ChapterProps>(
+  'ReadChapterScreen',
 );
 export const navigateToCreateTaskScreen = createNavigate<DetailScreenProps>(
   'CreateTaskScreen',

@@ -113,27 +113,6 @@ const DrawerScreen = () => {
         <DrawerContentView>
           <DrawerDropDown name={"TỔNG HỢP"} list={menuLists} />
         </DrawerContentView>
-        <DrawerContentView>
-          <ListMenuView onPress={onShowList}>
-            <DropdownText>
-              DỰ ÁN
-            </DropdownText>
-            <DownIconImage
-              style={{ transform: [{ rotate: showList ? "0deg" : "-90deg" }] }}
-              source={IC_DROPDOWN}
-            />
-          </ListMenuView>
-          {showList ? (
-            <View>
-              <FlatList
-                nestedScrollEnabled={true}
-                removeClippedSubviews={true}
-                data={projectsIds}
-                renderItem={renderItem}
-              />
-            </View>
-          ) : null}
-        </DrawerContentView>
         <TouchableOpacity onPress={onLogoutOnPress}>
           <LogoutText>Logout</LogoutText>
         </TouchableOpacity>

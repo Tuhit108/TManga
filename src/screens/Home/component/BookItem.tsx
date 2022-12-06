@@ -1,21 +1,27 @@
 import * as React from "react";
-import { memo, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { IC_RED_CLOCK, IMG_ADD_DEFAULT } from "@/assets";
 import { CheckBox } from "@/component/CheckBox";
 import { SlideFromRightIOS } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets";
+import { navigateToDetailScreen } from "@/utils/navigation";
 
 interface Props {
   name: string;
   img: string;
-  status: string
+  status: string;
+  url :string
 }
 
-export const TaskItem =memo((props: Props) => {
-  const { name, img,status } = props;
+export const BookItem =memo((props: Props) => {
+  const { name, img,status,url } = props;
+  const onPressItem = useCallback(()=>{
+    navigateToDetailScreen({id:url})
+
+  },[])
   return (
-    <ListView>
+    <ListView onPress={onPressItem}>
         <LeftItemView>
           <BookImg source={{uri:img }}/>
         </LeftItemView>
@@ -28,7 +34,7 @@ export const TaskItem =memo((props: Props) => {
 });
 
 
-const ListView = styled.View`
+const ListView = styled.TouchableOpacity`
   flex-direction: row;
   width: 100%;
   height: 148px;

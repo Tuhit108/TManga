@@ -11,12 +11,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "@/screens/Home/HomeScreen";
 import { navigationRef } from "@/utils/navigation";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { IC_CALENDAR, IC_HOME, IC_PROFILE, IC_SEND } from "@/assets";
+import { IC_CALENDAR, IC_GENRES, IC_HOME, IC_PROFILE, IC_SEARCH, IC_SEND } from "@/assets";
 import DrawerScreen from "@/screens/Drawer/DrawerScreen";
-import TaskDetailScreen from "@/screens/TaskDetail/TaskDetailScreen";
 import { PreloadScreen } from "@/screens/PreloadScreen";
-import CreateTaskScreen from "@/screens/CreateTask/CreateTask";
 import { BookDetailScreen } from "@/screens/BookDetal/BookDetailScreen";
+import GenresScreen from "@/screens/Genres/GenresScreen";
+import GenresDetail from "@/screens/Genres/GenresDetail";
+import SearchBook from "@/screens/SearchBook";
+import ReadChapter from "@/screens/BookDetal/ReadChapter";
 
 
 
@@ -69,25 +71,25 @@ const TabStackComponent = () => {
         }}
       />
       <TabStack.Screen
-        name="Screen2"
-        component={View}
+        name="GenresScreen"
+        component={GenresScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarView focused={focused}>
-              <TabIcon source={IC_PROFILE}></TabIcon>
-              <TabBarText> Giao cho tôi</TabBarText>
+              <TabIcon source={IC_GENRES}></TabIcon>
+              <TabBarText> Thể loại</TabBarText>
             </TabBarView>
           )
         }}
       />
       <TabStack.Screen
-        name="Screen3"
-        component={View}
+        name="SearchScreen"
+        component={SearchBook}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarView focused={focused}>
-              <TabIcon source={IC_SEND}></TabIcon>
-              <TabBarText>Tôi giao đi</TabBarText>
+              <TabIcon source={IC_SEARCH}></TabIcon>
+              <TabBarText>Tìm kiếm</TabBarText>
             </TabBarView>
           )
         }}
@@ -136,7 +138,8 @@ const MainStackComponent = memo(function MainStackComponent() {
     >
       <MainStack.Screen name="Drawer" component={DrawerStackComponent} />
       <MainStack.Screen name="BookDetailScreen" component={BookDetailScreen} />
-      <MainStack.Screen name="CreateTaskScreen" component={CreateTaskScreen} />
+      <MainStack.Screen name="ReadChapterScreen" component={ReadChapter} />
+      <MainStack.Screen name="GenresDetailScreen" component={GenresDetail} />
     </MainStack.Navigator>
   );
 });
