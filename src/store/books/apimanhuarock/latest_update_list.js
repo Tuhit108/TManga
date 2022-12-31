@@ -2,7 +2,7 @@ import axios from "axios";
 import { syncAllBooks } from "@/store/books";
 
 export const LATEST_UPDATE = (page) =>
-  axios.get('https://manhuarock.net/xem-nhieu/'+page)
+  axios.get('https://mangarock.top/xem-nhieu/'+page)
     .then((res) => {
       const cheerio = require('cheerio');
       const $ = cheerio.load(res.data);
@@ -12,7 +12,7 @@ export const LATEST_UPDATE = (page) =>
           const id = $(item).find('.thumb-manga a').attr('href')
           const image = $(item).find('.thumb-manga a img').attr('data-src')
           const latest = $(item).find('.bigor-manga .list-chapter .chapter-item span a').first().text();
-          const name = $(item).find('.bigor-manga h3 a').text()
+          const name = $(item).find('.bigor-manga h3 a').text().trim()
           data.push(
             {
               id : id,

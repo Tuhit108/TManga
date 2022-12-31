@@ -7,6 +7,7 @@ import CustomTextInput from "@/component/TextInput";
 import { useAsyncFn } from "react-use";
 import { ActivityIndicator, Alert } from "react-native";
 import { requestLogin } from "@/store/constant/funtions";
+import auth from '@react-native-firebase/auth';
 
 
 const LoginScreen = () => {
@@ -15,6 +16,24 @@ const LoginScreen = () => {
     email: "",
     password: ""
   });
+  const onSignIn = useCallback(()=>{
+    auth()
+        .createUserWithEmailAndPassword(params.email, params.password)
+        .then(() => {
+          console.log('User account created & signed in!');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            console.log('That email address is already in use!');
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+          }
+
+          console.error(error);
+        });
+  },[])
   const [{ loading }, onLogin] = useAsyncFn(async () => {
     if (!params.email || !params.password) {
       Alert.alert("", "Vui lòng nhập email và mật khẩu", [{ text: "OK" }]);
@@ -79,7 +98,7 @@ const LoginScreen = () => {
         </InputView>
       </AccountView>
       <ForgotPassword>Quên mật khẩu ?</ForgotPassword>
-      <LoginButton onPress={onLogin}>
+      <LoginButton onPress={onSignIn}>
         {loading ? <ActivityIndicator size={"small"} color={"#FFFFFF"} /> : <LoginText>Login</LoginText>}
       </LoginButton>
     </Container>

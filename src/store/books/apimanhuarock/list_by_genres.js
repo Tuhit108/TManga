@@ -12,8 +12,8 @@ export const LIST_BY_GENRES = (url) =>
             .map((index, item) => {
               const id = $(item).find('.thumb-manga a').attr('href')
               const image = $(item).find('.thumb-manga a img').attr('data-src')
-              const latest = $(item).find('.bigor-manga .list-chapter .chapter-item span a').first().text();
-              const name = $(item).find('.bigor-manga h3 a').text()
+              const latest = $(item).find('.bigor-manga .list-chapter .chapter-item span a').first().text().trim();
+              const name = $(item).find('.bigor-manga h3 a').text().trim()
               data.push(
                 {
                   id : id,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833746979576",
+    "project_id": "tmanga-74156",
+    "storage_bucket": "tmanga-74156.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833746979576:android:571450c5df5b938cde090d",
+        "android_client_info": {
+          "package_name": "com.tmanga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833746979576-7j3ln306vhum56b43c819ftim2eskd38.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-sPNaW_02Vduj6DdEcYng8jFIL_y9aLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833746979576-7j3ln306vhum56b43c819ftim2eskd38.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

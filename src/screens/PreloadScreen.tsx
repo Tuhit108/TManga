@@ -24,7 +24,7 @@ export const PreloadScreen = memo(() => {
 
   const getData = useCallback(() => {
     setTimeout(() => {
-      replaceWithMainScreen();
+      navigateToLoginScreen();
 
     }, 2000);
   }, []);

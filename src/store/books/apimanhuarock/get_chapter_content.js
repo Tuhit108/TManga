@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const READING_CHAPTER = (id) =>
-  axios.get('https://manhuarock.net/ajax/image/list/chap/'+id)
+  axios.get('https://mangarock.top/ajax/image/list/chap/'+id)
     .then((res) => {
       const cheerio = require('cheerio');
       const $ = cheerio.load(res.data.html);
